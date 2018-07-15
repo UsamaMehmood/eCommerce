@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block page_title %}Logout{% endblock %}
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Logout" class="btn btn-danger">
+        <a href="{% url 'store:home' %}">Cancel</a>
+    </form>
+
+{% endblock %}
