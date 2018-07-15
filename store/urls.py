@@ -5,5 +5,6 @@ app_name = 'store'
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('api/', views.DummyApi.as_view(), name='api')
+    path('logout/', views.Logout.as_view(), name='logout'),
+    path('api/', views.DummyApi.as_view(), name='api'),
 ]
