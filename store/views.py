@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse,  reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,11 +35,11 @@ class Home(FormView):
 class Logout(LoginRequiredMixin, TemplateView):
     template_name = 'store/logout.html'
     login_url = reverse_lazy('store:home')
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('store:home'))
-        
+
         return super(Logout, self).dispatch(request, args, kwargs)
 
     def post(self, request, *args, **kwargs):
