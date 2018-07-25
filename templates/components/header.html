@@ -1,16 +1,23 @@
-<div class="container">
+<div class="container-fluid">
     <div class="navigation">
-    <span class="site-name">eCommerce</span>
-    <ul class="navigation-list">
-        <li class="nav-list-item">Home</li>
-        <li class="nav-list-item">Products</li>
-        <li class="nav-list-item">Categories</li>
-        <li class="nav-list-item">About Us</li>
-    </ul>
-    {% if request.user.is_authenticated %}
-        <span class="logged-in">You are logged in as: {{ request.user.username }}</span>
-    {% else %}
-        <a href="{% url 'store:home' %}" class="log-in">Log In</a>
-    {% endif %}
-</div>
+        <span class="site-name">eCommerce</span>
+        <ul class="navigation-list">
+            <li class="nav-list-item">Home</li>
+            <li class="nav-list-item">Products</li>
+            <li class="nav-list-item">Categories</li>
+            <li class="nav-list-item">About Us</li>
+        </ul>
+        {% if request.user.is_authenticated %}
+            <span class="logged-in">You are logged in as: {{ request.user.username }}
+                <form class="login-form" method="POST" action="{% url 'store:logout' %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+        </span>
+        {% else %}
+            <span class="log-in">
+                <a href="{% url 'store:home' %}">Log In</a>|<a href="{% url 'store:signup' %}">Signup</a>
+            </span>
+        {% endif %}
+    </div>
 </div>

@@ -4,12 +4,14 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from store.forms import LoginForm
+from store.forms import LoginForm, SignupForm
+from store.models import Customer
 
 
 class Home(FormView):
@@ -44,6 +46,22 @@ class Logout(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         logout(request)
+        return HttpResponseRedirect(reverse('store:home'))
+
+
+class Signup(FormView):
+    template_name = 'store/signup.html'
+    form_class = SignupForm
+
+    def form_valid(self, form):
+        customer = Customer(first_name=form.cleaned_data['first_name'],
+                            last_name=form.cleaned_data['last_name'],
+                            username=form.cleaned_data['username'],
+                            email=form.cleaned_data['email'],
+                            password=form.cleaned_data['password'])
+        customer.save()
+        user = User.objects.get(email=customer.email, username=customer.username)
+        login(request=self.request, user=user)
         return HttpResponseRedirect(reverse('store:home'))
 
 
