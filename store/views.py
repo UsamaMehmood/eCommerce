@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,39 +15,32 @@ from store.forms import LoginForm, SignupForm
 from store.models import Customer
 
 
-class Home(FormView):
-    template_name = 'store/home.html'
-    form_class = LoginForm
+@csrf_exempt
+def authenticate_login(request):
+    if request.method == 'GET':
+        return render(request, 'basic.html', {'title': 'Invalid Request!',
+                                              'text': 'You cannot access Login with this type of request'})
 
-    def form_valid(self, form):
-        if self.request.user.is_authenticated:
-            return HttpResponse('Already Authenticated!')
-
-        user = authenticate(request=self.request, username=form.cleaned_data['username'],
-                            password=form.cleaned_data['password'])
-        if user:
-            login(request=self.request, user=user)
-            return HttpResponse('You are logged in successfully!')
-        else:
-            form.add_error(None, error='Username or password is incorrect')
-            context = self.get_context_data(**self.kwargs)
-            context['form'] = form
-            return render(self.request, 'store/home.html', context)
-
-
-class Logout(LoginRequiredMixin, TemplateView):
-    template_name = 'store/logout.html'
-    login_url = reverse_lazy('store:home')
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('store:home'))
-
-        return super(Logout, self).dispatch(request, args, kwargs)
-
-    def post(self, request, *args, **kwargs):
-        logout(request)
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request=request, username=username, password=password)
+    if user:
+        login(request=request, user=user)
         return HttpResponseRedirect(reverse('store:home'))
+    return render(request, 'basic.html', {'title': 'Error', 'text': 'Username or password is incorrect'})
+
+@csrf_exempt
+def authenticate_logout(request):
+    if request.method == 'GET':
+        return render(request, 'basic.html', {'title': 'Invalid Request!',
+                                              'text': 'You cannot access Login with this type of request'})
+
+    logout(request)
+    return HttpResponseRedirect(reverse('store:home'))
+
+
+class Home(TemplateView):
+    template_name = 'store/home.html'
 
 
 class Signup(FormView):
