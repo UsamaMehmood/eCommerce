@@ -1,23 +1,24 @@
-<div class="container-fluid">
-    <div class="navigation">
-        <span class="site-name">eCommerce</span>
-        <ul class="navigation-list">
-            <li class="nav-list-item">Home</li>
-            <li class="nav-list-item">Products</li>
-            <li class="nav-list-item">Categories</li>
-            <li class="nav-list-item">About Us</li>
-        </ul>
-        {% if request.user.is_authenticated %}
-            <span class="logged-in">You are logged in as: {{ request.user.username }}
-                <form class="login-form" method="POST" action="{% url 'store:logout' %}">
-                    {% csrf_token %}
-                    <input type="submit" value="Logout">
-                </form>
-        </span>
+{% load extras %}
+<div class="container-fluid navigation">
+    <div class="site-title">
+        <span class="title">Gradient</span>
+        <span class="caption">An eCommerce site</span>
+    </div>
+    <div class="authentication">
+        {% if not request.user.is_anonymous %}
+            <button class="badge" onclick="showTooltip()">{{ request.user|first_letter }}</button>
         {% else %}
-            <span class="log-in">
-                <a href="{% url 'store:home' %}">Log In</a>|<a href="{% url 'store:signup' %}">Signup</a>
-            </span>
+            <a class="btn-o" onclick="login()">Login</a> <a class="btn-o" href="{% url 'store:signup' %}">Signup</a>
         {% endif %}
     </div>
+    {% if not request.user.is_anonymous %}
+        <div class="navigation-tooltip">
+            <a href="#" class="tooltip-link">Cart</a>
+            <a href="#" class="tooltip-link">Account</a>
+            <a href="#" class="tooltip-link">Settings</a>
+            <form class="logout" method="post" action="{% url 'store:logout' %}">
+                <input type="submit" value="Logout" id="logout">
+            </form>
+        </div>
+    {% endif %}
 </div>

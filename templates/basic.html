@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block body_id %}basic{% endblock %}
+{% block content %}
+    <div class="container">
+        <span class="heading">{{ title }}</span>
+        <span class="body">{{ text }}</span>
+    </div>
+{% endblock %}

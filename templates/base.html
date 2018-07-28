@@ -11,12 +11,16 @@
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'script.js' %}"></script>
     {% block scripts %}{% endblock %}
 </head>
 <body id="{% block body_id %}{% endblock %}">
 <header>{% include 'components/header.html' %}</header>
-<div class="container">
+{% include 'components/login-panel.html' %}
+<div class="container-fluid">
     {% block content %}
 
     {% endblock %}

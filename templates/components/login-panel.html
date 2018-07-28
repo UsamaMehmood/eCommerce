@@ -1,0 +1,14 @@
+<div class="login-panel">
+    <div class="login-title">
+        <span class="title">Login</span>
+        <span class="caption">Enter login details</span>
+    </div>
+    <form class="login-form" method="post" action="{% url 'store:login' %}">
+        <p><label for="id_username">Username:</label> <input type="text" name="username" maxlength="25" required=""
+                                                             id="id_username"></p>
+        <p><label for="id_password">Password:</label> <input type="password" name="password" maxlength="12"
+                                                             required="" id="id_password"></p>
+        <input class="btn-c" type="submit" value="Login"> <input class="btn-c" type="reset" value="cancel"
+                                                                 onclick="hide()">
+    </form>
+</div>
